@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Notices.Application.Responses.Notice;
 using Notices.Domain.Entities;
-using Notices.Model.Responses.Notice;
 namespace Notices.Application.MappingProfiles;
 
 public class MapModelsOnResponses : Profile

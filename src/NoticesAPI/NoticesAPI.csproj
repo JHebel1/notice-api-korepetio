@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.0.0-develop.18" />
+    <PackageReference Include="MediatR" Version="13.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
@@ -22,7 +24,6 @@
     <ProjectReference Include="..\Notices.Application\Notices.Application.csproj" />
     <ProjectReference Include="..\Notices.Domain\Notices.Domain.csproj" />
     <ProjectReference Include="..\Notices.Infrastructure\Notices.Infrastructure.csproj" />
-    <ProjectReference Include="..\Notices.Model\Notices.Model.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,22 +1,22 @@
 ﻿using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Notices.Application.Services;
+using Notices.Application.Commands.CreateNotice;
+using Notices.Application.Queries.GetNoticeById;
+using Notices.Application.Responses.Notice;
 using Swashbuckle.AspNetCore.Annotations;
-using Notices.Domain.RepositoryInterfaces;
-using Notices.Model.Requests.Notice;
-using Notices.Model.Responses.Notice;
 
 namespace NoticesAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class NoticesController(INoticeService noticeService) : ControllerBase
+public class NoticesController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Guid))]
-    public async Task<IActionResult> CreateNotice([FromBody] NoticeRequest request, CancellationToken token)
+    public async Task<IActionResult> CreateNotice([FromBody] CreateNoticeCommand command, CancellationToken token)
     {
-        var result = await noticeService.CreateNotice(request, token);
+        var result = await mediator.Send(command, token);
         return Ok(result);
     }
 
@@ -24,7 +24,7 @@ public class NoticesController(INoticeService noticeService) : ControllerBase
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(NoticeResponse))]
     public async Task<IActionResult> GetNoticeById([FromRoute] Guid id, CancellationToken token)
     {
-        var result = await noticeService.GetNoticeById(id, token);
+        var result = await mediator.Send(new GetNoticeByIdQuery(id), token);
         return Ok(result);
     }
 }
