@@ -21,6 +21,7 @@ builder.Services.AddNoticeApiMassTransit(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(Notices.Application.MappingProfiles.MapModelsOnResponses).Assembly);
 builder.Services.AddAutoMapper(typeof(Notices.Application.MappingProfiles.MapRequestsOnModels).Assembly);
+builder.Services.AddAutoMapper(typeof(Notices.Application.MappingProfiles.MapContractsOnModels).Assembly);
 
 //builder.Services.AddDbContext<UsersDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<NoticesDbContext>(opt =>
