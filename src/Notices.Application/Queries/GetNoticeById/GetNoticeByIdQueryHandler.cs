@@ -9,7 +9,7 @@ public class GetNoticeByIdQueryHandler(INoticeRepository noticeRepository, IMapp
 {
     public async Task<NoticeResponse> Handle(GetNoticeByIdQuery query, CancellationToken cancellationToken)
     {
-        var notice = await noticeRepository.GetNoticeById(query.id, cancellationToken);
+        var notice = await noticeRepository.GetNoticeById(query.Id, cancellationToken);
         var noticeResponse = mapper.Map<NoticeResponse>(notice);
         return noticeResponse;
     }
