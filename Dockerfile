@@ -11,6 +11,6 @@ RUN dotnet publish src/NoticesAPI/NoticesAPI.csproj -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app 
 COPY --from=build /app/publish .
-EXPOSE 5001
-ENV ASPNETCORE_URLS=http://+:5001
+EXPOSE 5020
+ENV ASPNETCORE_URLS=http://+:5020
 ENTRYPOINT ["dotnet", "NoticesAPI.dll"]

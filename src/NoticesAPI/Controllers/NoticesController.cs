@@ -5,6 +5,7 @@ using Notices.Application.Commands.CreateNotice;
 using Notices.Application.Queries.GetAllNotices;
 using Notices.Application.Queries.GetNoticeById;
 using Notices.Application.Responses.Notice;
+using Notices.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NoticesAPI.Controllers;
@@ -38,5 +39,29 @@ public class NoticesController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new GetAllNoticesQuery(page, pageSize), token);
         return Ok(result);
+    }
+
+    [HttpGet("/educationLevels")]
+    [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<EducationLevel>))]
+    public IActionResult GetEducationalLevels(CancellationToken token)
+    {
+        var levels = Enum.GetValues(typeof(EducationLevel))
+            .Cast<EducationLevel>()
+            .Select((EducationLevel x) => new { Id = (int)x, Name = x.ToString() })
+            .ToList();
+
+        return Ok(levels);
+    }
+    
+    [HttpGet("/subjects")]
+    [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<Subject>))]
+    public IActionResult GetSubjects(CancellationToken token)
+    {
+        var subjects = Enum.GetValues(typeof(Subject))
+            .Cast<Subject>()
+            .Select((Subject x) => new { Id = (int)x, Name = x.ToString() })
+            .ToList();
+
+        return Ok(subjects);
     }
 }
