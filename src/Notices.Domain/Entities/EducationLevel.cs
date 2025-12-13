@@ -4,17 +4,24 @@ namespace Notices.Domain.Entities;
 
 public enum EducationLevel
 {
-    Podstawowka13,
+    [Display(Name = "Podstawówka (1-3)")]
+    Podstawowka13 = 1,
     
-    Podstawowka46,
+    [Display(Name = "Podstawówka (4-6)")]
+    Podstawowka46 = 2,
 
-    Klasy7_8,
+    [Display(Name = "Podstawówka (7-8)")]
+    Klasy7_8 = 3,
 
-    Liceum,
+    [Display(Name = "Liceum")]
+    Liceum = 4,
     
-    PrzygotowanieDoMaturyPodstawowej,
+    [Display(Name = "Przygotowanie do matury podstawowej")]
+    PrzygotowanieDoMaturyPodstawowej = 5,
     
-    PrzygotowanieDoMaturyRozszerzonej,
+    [Display(Name = "Przygotowanie do matury rozszerzonej")]
+    PrzygotowanieDoMaturyRozszerzonej = 6,
     
+    [Display(Name = "Studia")]
     Studia
 }
