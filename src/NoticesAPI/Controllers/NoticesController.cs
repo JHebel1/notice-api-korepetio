@@ -41,7 +41,7 @@ public class NoticesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("/educationLevels")]
+    [HttpGet("educationLevels")]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<EducationLevel>))]
     public IActionResult GetEducationalLevels(CancellationToken token)
     {
@@ -53,7 +53,7 @@ public class NoticesController(IMediator mediator) : ControllerBase
         return Ok(levels);
     }
     
-    [HttpGet("/subjects")]
+    [HttpGet("subjects")]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<Subject>))]
     public IActionResult GetSubjects(CancellationToken token)
     {
