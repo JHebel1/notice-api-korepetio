@@ -13,4 +13,11 @@ public class UserRepository(NoticesDbContext userDbContext) : IUserRepository
             throw new InvalidOperationException($"User with id '{id}' not found.");
         return user;
     }
+
+    public async Task<Guid> AddAsync(User user)
+    {
+        await userDbContext.Users.AddAsync(user);
+        await userDbContext.SaveChangesAsync();
+        return user.Id;
+    }
 }

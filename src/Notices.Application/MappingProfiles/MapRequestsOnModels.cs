@@ -9,7 +9,6 @@ public class MapRequestsOnModels : Profile
 { 
     public MapRequestsOnModels()
     {
-        CreateMap<List<CreateOfferDto>, List<Offer>>();
         CreateMap<CreateOfferDto, Offer>();
         CreateMap<CreateNoticeCommand, Notice>();
     }

@@ -8,6 +8,7 @@ public class MapContractsOnModels : Profile
 {
     public MapContractsOnModels()
     {
-        CreateMap<UserCreated, User>();
+        CreateMap<UserCreated, User>()
+            .ForMember(user => user.Id, expression => expression.MapFrom(src => src.UserId));
     }
 }

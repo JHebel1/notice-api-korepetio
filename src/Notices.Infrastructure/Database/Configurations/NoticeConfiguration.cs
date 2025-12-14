@@ -16,9 +16,7 @@ public class NoticeConfiguration : IEntityTypeConfiguration<Notice>
             .IsRequired();
 
         // Owner (User)
-        builder.HasOne(n => n.NoticeOwner)
-            .WithMany()
-            .HasForeignKey("OwnerId")
+        builder.Property(n => n.OwnerId)
             .IsRequired();
 
         // Offers (child entities)
