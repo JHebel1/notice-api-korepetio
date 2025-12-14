@@ -5,7 +5,6 @@ using Notices.Application.Commands.CreateNotice;
 using Notices.Application.Queries.GetAllNotices;
 using Notices.Application.Queries.GetNoticeById;
 using Notices.Application.Responses.Notice;
-using Notices.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NoticesAPI.Controllers;
