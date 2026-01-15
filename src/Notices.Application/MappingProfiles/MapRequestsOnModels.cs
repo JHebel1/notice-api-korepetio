@@ -5,9 +5,10 @@ using Notices.Domain.Entities;
 namespace Notices.Application.MappingProfiles;
 
 public class MapRequestsOnModels : Profile
-{
+{ 
     public MapRequestsOnModels()
     {
+        CreateMap<CreateOfferDto, Offer>();
         CreateMap<CreateNoticeCommand, Notice>();
     }
 }

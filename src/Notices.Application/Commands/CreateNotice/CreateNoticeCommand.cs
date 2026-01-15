@@ -8,6 +8,6 @@ public record CreateNoticeCommand
     string  Title,
     string Content,
     Guid OwnerId,
-    Guid SubjectId,
-    List<Guid> OfferIds
+    Subject Subject,
+    List<CreateOfferDto> Offers
 ) : IRequest<Guid>;

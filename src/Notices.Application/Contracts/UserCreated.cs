@@ -2,5 +2,5 @@ namespace Shared.Contracts;
 
 public class UserCreated
 {
-    public Guid UserId { get; init; }
+    public Guid UserId { get; set; }
 }

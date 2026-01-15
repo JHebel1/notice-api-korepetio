@@ -17,7 +17,7 @@ public class NoticeRepository(NoticesDbContext noticesDbContext) : INoticeReposi
 
     public async Task<Guid> AddAsync(Notice notice, CancellationToken token)
     {
-        noticesDbContext.Add(notice);
+        noticesDbContext.Notices.Add(notice);
         await noticesDbContext.SaveChangesAsync(token);
         return notice.Id;
     }
