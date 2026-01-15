@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Notices.Application.DTO;
 using Notices.Application.Responses.Notice;
 using Notices.Domain.Common;
 using Notices.Domain.Entities;
@@ -15,18 +14,15 @@ public class MapModelsOnResponses : Profile
                 src.GetDisplayName()
                 )
             );
-            
-        
-        CreateMap<Offer, OfferDto>()
-            .ConvertUsing(src => 
-                new OfferDto(
-                    new EducationLevelDto(
-                        (int)src.EducationLevel,
-                        src.EducationLevel.GetDisplayName()
-                        ),
-                    src.Price
+        CreateMap<EducationLevel, EducationLevelDto>()
+            .ConstructUsing(
+                src => new EducationLevelDto(
+                    (int)src, 
+                    src.GetDisplayName()
                     )
-            );
+                );    
+        
+        CreateMap<Offer, OfferDto>();
         CreateMap<Notice, NoticeResponse>()
             .ForMember(d => d.Subject, o => o.MapFrom(s => s.Subject));
     }

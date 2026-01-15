@@ -1,6 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Notices.Application.DTO;
+using Notices.Application.Responses.Notice;
 using Notices.Domain.Common;
 using Notices.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;

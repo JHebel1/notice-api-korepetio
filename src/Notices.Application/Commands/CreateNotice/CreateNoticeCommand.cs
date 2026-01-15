@@ -1,5 +1,4 @@
 using MediatR;
-using Notices.Application.DTO;
 using Notices.Domain.Entities;
 
 namespace Notices.Application.Commands.CreateNotice;

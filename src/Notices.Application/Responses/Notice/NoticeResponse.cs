@@ -1,5 +1,3 @@
-using Notices.Application.DTO;
-using Notices.Domain.Entities;
 
 namespace Notices.Application.Responses.Notice;
 

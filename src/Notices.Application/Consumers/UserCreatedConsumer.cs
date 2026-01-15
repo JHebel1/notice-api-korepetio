@@ -13,15 +13,8 @@ public class UserCreatedConsumer(IMapper mapper, IUserRepository userRepository)
         var msg = context.Message;
 
         var user = mapper.Map<User>(msg);
-        Console.WriteLine("_____________");
-        Console.WriteLine(msg.UserId);
-        Console.WriteLine("_____________");
-        Console.WriteLine(user.Id);
-        Console.WriteLine("_____________");
-
-        var id = await userRepository.AddAsync(user);
         
-        Console.WriteLine(id);
+        await userRepository.AddAsync(user);
         
         await Task.CompletedTask;
     }

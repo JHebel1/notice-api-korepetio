@@ -1,4 +1,4 @@
-namespace Notices.Application.DTO;
+namespace Notices.Application.Responses.Notice;
 
 public record OfferDto(
     EducationLevelDto EducationLevel,

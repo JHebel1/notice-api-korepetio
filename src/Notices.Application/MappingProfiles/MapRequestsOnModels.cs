@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Notices.Application.Commands.CreateNotice;
-using Notices.Application.DTO;
 using Notices.Domain.Entities;
 
 namespace Notices.Application.MappingProfiles;
