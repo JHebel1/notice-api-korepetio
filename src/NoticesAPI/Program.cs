@@ -1,6 +1,9 @@
 using MassTransit;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Notices.Application;
 using Microsoft.EntityFrameworkCore;
+using Notices.Application.Commands.CreateNotice;
 using Notices.Domain.RepositoryInterfaces;
 using Notices.Infrastructure.Database;
 using Notices.Infrastructure.Extensions;
@@ -17,12 +20,21 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
 });
 
+//Validation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
+
+// Mass Transit
 builder.Services.AddNoticeApiMassTransit(builder.Configuration);
 
+
+// Auto Mapper
 builder.Services.AddAutoMapper(typeof(Notices.Application.MappingProfiles.MapModelsOnResponses).Assembly);
 builder.Services.AddAutoMapper(typeof(Notices.Application.MappingProfiles.MapRequestsOnModels).Assembly);
 builder.Services.AddAutoMapper(typeof(Notices.Application.MappingProfiles.MapContractsOnModels).Assembly);
 
+
+// Database Context
 builder.Services.AddDbContext<NoticesDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<INoticeRepository, NoticeRepository>();
