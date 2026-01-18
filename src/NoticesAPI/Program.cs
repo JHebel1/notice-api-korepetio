@@ -22,7 +22,7 @@ builder.Services.AddMediatR(cfg =>
 
 //Validation
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly, includeInternalTypes: true);
 
 // Mass Transit
 builder.Services.AddNoticeApiMassTransit(builder.Configuration);
