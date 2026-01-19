@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notices.Application.Commands.CreateNotice;
 using Notices.Application.Queries.GetAllNotices;
@@ -13,14 +14,23 @@ namespace NoticesAPI.Controllers;
 [Route("api/[controller]")]
 public class NoticesController(IMediator mediator) : ControllerBase
 {
+    [Authorize]
     [HttpPost]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Guid))]
     public async Task<IActionResult> CreateNotice([FromBody] CreateNoticeCommand command, CancellationToken token)
     {
-        var result = await mediator.Send(command, token);
+        var subClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(subClaim, out var keycloakId))
+        {
+            return Unauthorized("User id in token is required.");
+        }
+
+        var commandWithUser = command with { IdentityProviderId = keycloakId };
+        var result = await mediator.Send(commandWithUser, token);
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(NoticeResponse))]
     public async Task<IActionResult> GetNoticeById([FromRoute] Guid id, CancellationToken token)
@@ -29,6 +39,7 @@ public class NoticesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<NoticeResponse>))]
     public async Task<IActionResult> GetAllNotices(

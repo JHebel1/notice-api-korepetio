@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MediatR;
 using Notices.Domain.Entities;
 
@@ -7,7 +8,7 @@ public record CreateNoticeCommand
 (
     string  Title,
     string Content,
-    Guid OwnerId,
     Subject Subject,
-    List<CreateOfferDto> Offers
+    List<CreateOfferDto> Offers,
+    [property: JsonIgnore] Guid IdentityProviderId = default
 ) : IRequest<Guid>;

@@ -20,11 +20,6 @@ internal class CreateNoticeCommandValidator : AbstractValidator<CreateNoticeComm
             .MaximumLength(5000)
             .WithErrorCode(NoticeCommandErrors.ContentToLong.ErrorCode)
             .WithMessage(NoticeCommandErrors.ContentToLong.ErrorMessage);
-        RuleFor(x => x.OwnerId)
-            .NotEmpty()
-            .NotEqual(Guid.Empty)
-            .WithErrorCode(NoticeCommandErrors.NoticeOwnerRequired.ErrorCode)
-            .WithMessage(NoticeCommandErrors.NoticeOwnerRequired.ErrorMessage);
         RuleFor(x => x.Subject)
             .NotEmpty()
             .WithErrorCode(NoticeCommandErrors.SubjectRequired.ErrorCode)
