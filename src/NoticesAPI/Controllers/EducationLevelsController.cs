@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notices.Application.Responses.Notice;
 using Notices.Domain.Common;
@@ -12,6 +13,7 @@ namespace NoticesAPI.Controllers;
 [Route("api/[controller]")]
 public class EducationLevelsController : ControllerBase
 {
+    [AllowAnonymous]
     [HttpGet]
     [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<EducationLevelDto>))]
     public IActionResult GetEducationalLevels(CancellationToken token)

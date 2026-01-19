@@ -9,6 +9,7 @@ public class MapRequestsOnModels : Profile
     public MapRequestsOnModels()
     {
         CreateMap<CreateOfferDto, Offer>();
-        CreateMap<CreateNoticeCommand, Notice>();
+        CreateMap<CreateNoticeCommand, Notice>()
+            .ForMember(dest => dest.OwnerId, opt => opt.MapFrom((src, dest, destMember, context) => context.Items["InternalUserId"])); 
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Notices.Domain.Entities;
 using Notices.Domain.RepositoryInterfaces;
 using Notices.Infrastructure.Database;
@@ -19,5 +20,13 @@ public class UserRepository(NoticesDbContext userDbContext) : IUserRepository
         await userDbContext.Users.AddAsync(user);
         await userDbContext.SaveChangesAsync();
         return user.Id;
+    }
+
+    public async Task<Guid?> GetUserIdByIdentityProviderId(Guid identityProviderId, CancellationToken token)
+    {
+        return await userDbContext.Users
+            .Where(x => x.IdentityProviderId == identityProviderId)
+            .Select(x => (Guid?)x.Id)
+            .FirstOrDefaultAsync(token);
     }
 }
