@@ -8,4 +8,13 @@ public class Notice
     public Guid OwnerId { get; private set; }
     public Subject Subject { get; private set; }
     public List<Offer> Offers { get; private set; }
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+    public DateTime ExpiresAt { get; private set; } = DateTime.UtcNow.AddDays(30);
+    public Status Status { get; private set; } =  Status.Active;
+
+    public void renewNotice(int renewDays)
+    {
+        this.ExpiresAt = DateTime.UtcNow.AddDays(renewDays);
+        this.Status = Status.Active;
+    }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Notices.Domain.RepositoryInterfaces;
 using Notices.Infrastructure.Database;
 using Notices.Infrastructure.Extensions;
+using Notices.Infrastructure.Middleware;
 using Notices.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -106,8 +107,13 @@ builder.Services.AddDbContext<NoticesDbContext>(opt =>
 builder.Services.AddScoped<INoticeRepository, NoticeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Exception handler
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseSwagger();
 app.UseSwaggerUI();
 

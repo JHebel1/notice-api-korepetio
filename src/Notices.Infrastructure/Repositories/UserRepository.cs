@@ -22,11 +22,17 @@ public class UserRepository(NoticesDbContext userDbContext) : IUserRepository
         return user.Id;
     }
 
-    public async Task<Guid?> GetUserIdByIdentityProviderId(Guid identityProviderId, CancellationToken token)
+    public async Task<Guid> GetUserIdByIdentityProviderId(Guid identityProviderId, CancellationToken token)
     {
-        return await userDbContext.Users
+        var userId = await userDbContext.Users
             .Where(x => x.IdentityProviderId == identityProviderId)
-            .Select(x => (Guid?)x.Id)
+            .Select(x => x.Id)
+            .Cast<Guid?>()
             .FirstOrDefaultAsync(token);
+        if (userId is null || userId == Guid.Empty)
+        {
+            throw new KeyNotFoundException($"User with identityProviderId '{identityProviderId}' not found.");
+        }
+        return userId.Value;
     }
 }
