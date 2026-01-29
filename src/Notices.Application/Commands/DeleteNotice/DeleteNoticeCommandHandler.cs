@@ -1,3 +1,4 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
 using Notices.Domain.RepositoryInterfaces;
@@ -17,7 +18,6 @@ public class DeleteNoticeCommandHandler(INoticeRepository noticeRepository, IUse
         {
             throw new UnauthorizedAccessException("Access denied");
         }
-        
-        return await noticeRepository.DeleteAsync(command.NoticeId, cancellationToken);
+        return await noticeRepository.SetStatusDeleted(command.NoticeId, cancellationToken);
     }
 }

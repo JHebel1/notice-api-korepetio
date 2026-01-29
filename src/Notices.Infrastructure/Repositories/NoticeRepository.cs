@@ -11,7 +11,7 @@ public class NoticeRepository(NoticesDbContext noticesDbContext) : INoticeReposi
     {
         var notice = await noticesDbContext.Notices.FindAsync(id, token);
         if (notice is null)
-            throw new InvalidOperationException($"Notice with id '{id}' not found.");
+            throw new KeyNotFoundException($"Notice with id '{id}' not found.");
         return notice;
     }
     
@@ -23,7 +23,7 @@ public class NoticeRepository(NoticesDbContext noticesDbContext) : INoticeReposi
             .FirstOrDefaultAsync(token);
 
         if (ownerId == default)
-            throw new InvalidOperationException($"Notice with id '{noticeId}' not found.");
+            throw new KeyNotFoundException($"Notice with id '{noticeId}' not found.");
 
         return ownerId;
     }
@@ -39,17 +39,30 @@ public class NoticeRepository(NoticesDbContext noticesDbContext) : INoticeReposi
     {
         var notice = await noticesDbContext.Notices.Skip((page-1) * pageSize).Take(pageSize).ToListAsync(token);
         if (notice is null)
-            throw new InvalidOperationException("No notices found");
+            throw new KeyNotFoundException("No notices found");
         return notice;
     }
 
     public async Task<bool> DeleteAsync(Guid id, CancellationToken token)
     {
         var notice = await noticesDbContext.Notices.FindAsync(new object[] { id }, token);
-        if (notice == null) return false;
+        if (notice == null) 
+            throw new KeyNotFoundException($"Notice with id '{id}' not found.");
 
         noticesDbContext.Notices.Remove(notice);
         await noticesDbContext.SaveChangesAsync(token);
+        return true;
+    }
+
+    public async Task<bool> SetStatusDeleted(Guid id, CancellationToken token)
+    {
+        int affectedRows = await noticesDbContext.Notices
+            .Where(n => n.Id == id)
+            .ExecuteUpdateAsync(s => s.SetProperty(n => n.Status, Status.Deleted), token);
+
+        if (affectedRows == 0)
+            throw new KeyNotFoundException($"Notice with '{id}' not found");
+        
         return true;
     }
 }
