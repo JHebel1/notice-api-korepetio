@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notices.Application.Commands.CreateNotice;
 using Notices.Application.Commands.DeleteNotice;
+using Notices.Application.Commands.RenewNotice;
 using Notices.Application.Queries.GetAllNotices;
 using Notices.Application.Queries.GetNoticeById;
 using Notices.Application.Responses.Notice;
@@ -52,6 +53,21 @@ public class NoticesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
+    [HttpPatch("{id}/renew")]
+    [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(NoticeResponse))]
+    public async Task<IActionResult> Extend(Guid id, CancellationToken token)
+    {
+        var subClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(subClaim, out var keycloakId))
+        {
+            return Unauthorized("User id in token is required.");
+        }
+
+        var result = await mediator.Send(new RenewNoticeCommand(id, keycloakId), token);
+        return Ok(result);
+    }
+    
     [Authorize]
     [HttpDelete("{id}")]
     [SwaggerResponse((int)HttpStatusCode.NoContent)]

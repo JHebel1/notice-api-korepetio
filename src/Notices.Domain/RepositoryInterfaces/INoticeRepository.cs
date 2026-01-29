@@ -9,5 +9,6 @@ public interface INoticeRepository
     Task<Guid> AddAsync(Notice notice, CancellationToken token);
     Task<bool> DeleteAsync(Guid id, CancellationToken token);
     Task<bool> SetStatusDeleted(Guid id, CancellationToken token);
+    Task<Notice> RenewNotice(Guid id, CancellationToken token, int extendDays = 30);
     Task <List<Notice>> GetAllNotices(int page, int pageSize, CancellationToken token);
 }

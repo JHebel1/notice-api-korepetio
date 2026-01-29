@@ -11,4 +11,10 @@ public class Notice
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime ExpiresAt { get; private set; } = DateTime.UtcNow.AddDays(30);
     public Status Status { get; private set; } =  Status.Active;
+
+    public void renewNotice(int renewDays)
+    {
+        this.ExpiresAt = DateTime.UtcNow.AddDays(renewDays);
+        this.Status = Status.Active;
+    }
 }

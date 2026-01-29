@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Notices.Application.Commands.RenewNotice;
 using Notices.Domain.RepositoryInterfaces;
 using Notices.Domain.Entities;
 using Notices.Infrastructure.Database;
@@ -43,6 +44,20 @@ public class NoticeRepository(NoticesDbContext noticesDbContext) : INoticeReposi
         return notice;
     }
 
+    public async Task<Notice> RenewNotice(Guid id, CancellationToken token, int extendDays = 30)
+    {
+        var notice = await noticesDbContext.Notices
+            .FirstOrDefaultAsync(n => n.Id == id && n.Status != Status.Deleted, token);
+
+        if (notice is null)
+            throw new KeyNotFoundException($"Notice with id '{id}' not found");
+        
+        notice.renewNotice(extendDays);
+        
+        await noticesDbContext.SaveChangesAsync(token);
+        return notice;
+    }
+    
     public async Task<bool> DeleteAsync(Guid id, CancellationToken token)
     {
         var notice = await noticesDbContext.Notices.FindAsync(new object[] { id }, token);
