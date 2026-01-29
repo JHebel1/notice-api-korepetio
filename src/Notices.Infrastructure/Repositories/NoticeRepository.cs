@@ -80,4 +80,9 @@ public class NoticeRepository(NoticesDbContext noticesDbContext) : INoticeReposi
         
         return true;
     }
+    
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await noticesDbContext.SaveChangesAsync(cancellationToken);
+    }
 }

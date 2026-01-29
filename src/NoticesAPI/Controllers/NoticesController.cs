@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Notices.Application.Commands.CreateNotice;
 using Notices.Application.Commands.DeleteNotice;
 using Notices.Application.Commands.RenewNotice;
+using Notices.Application.Commands.UpdateNotice;
 using Notices.Application.Queries.GetAllNotices;
 using Notices.Application.Queries.GetNoticeById;
 using Notices.Application.Responses.Notice;
@@ -67,7 +68,23 @@ public class NoticesController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new RenewNoticeCommand(id, keycloakId), token);
         return Ok(result);
     }
-    
+
+    [Authorize]
+    [HttpPut("{id}")]
+    [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(NoticeResponse))]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNoticeCommand command, CancellationToken token)
+    {
+        var subClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(subClaim, out var keycloakId))
+        { 
+            return Unauthorized("User id in token is required.");
+        }
+        
+        var commandWithUser = command with { IdentityProviderId = keycloakId, NoticeId = id};
+        
+        var result = await mediator.Send(commandWithUser, token);
+        return Ok(result);
+    }
     [Authorize]
     [HttpDelete("{id}")]
     [SwaggerResponse((int)HttpStatusCode.NoContent)]
