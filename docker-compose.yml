@@ -1,0 +1,52 @@
+services:
+  notice-api:
+    build: ./
+    container_name: notice-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      #### DATABASE
+      - ConnectionStrings__DefaultConnection=Host=notice-database;Database=notice_database;Username=postgres;Password=postgres
+      #### RABBITMQ
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=guest
+      - RabbitMq__Password=guest
+    ports:
+      - "7100:5020"
+    depends_on:
+      notice-database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  notice-database:
+    image: postgres:16-alpine
+    container_name: notice-database
+    restart: always
+    environment:
+      POSTGRES_DB: notice_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - notice_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d notice_database"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  notice_pgdata:
